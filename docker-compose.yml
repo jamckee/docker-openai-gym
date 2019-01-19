@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  gym:
+    image: 'gym'
+    container_name: 'gym'
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    labels:
+      - traefik.backend=gym
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:gym.stizz.net
+      - traefik.ssl.port=6002
+      - traefik.ssl.protocol=https
+      - traefik.frontend.entryPoints=https,http 
+      - traefik.http.port=6001
+      - traefik.http.protocol=http
+    tty: true
+    networks:
+      swarmProxy:
+
+networks:
+  swarmProxy:
+    external: True
